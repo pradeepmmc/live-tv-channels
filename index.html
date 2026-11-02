@@ -1,109 +1,331 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="si">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Premium Live TV Player</title>
-  <link rel="icon" href="data:,">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      /* නවීන අඳුරු පසුබිම */
-      background: linear-gradient(135deg, #0d0f14 0%, #151821 100%);
-      color: #e0e6ed;
-      margin: 0;
-      padding: 15px;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0b0d12 0%, #141820 50%, #0f1218 100%);
+      color: #e2e8f0;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-    
-    main {
-      width: 100%;
-      max-width: 850px;
-      /* 3D Glassmorphism මූලික රාමුව */
-      background: rgba(26, 30, 41, 0.6);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 20px 15px;
     }
 
-    /* 3D Header Bar */
+    main {
+      width: 100%;
+      max-width: 920px;
+      background: rgba(22, 26, 36, 0.75);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Header */
     .header-bar {
-      background: linear-gradient(145deg, #212533, #181b25);
-      border-radius: 12px;
-      padding: 15px 20px;
-      margin-bottom: 25px;
-      box-shadow:  5px 5px 15px #0b0c11, -5px -5px 15px #252a39;
+      background: linear-gradient(145deg, #1e2330, #161a24);
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 28px;
       text-align: center;
-      border-bottom: 2px solid #ff3b30;
+      box-shadow: 6px 6px 16px #0a0c11, -6px -6px 16px #222838;
+      border-bottom: 3px solid #ff3b30;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-bar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,59,48,0.5), transparent);
     }
     .header-bar h1 {
       margin: 0;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      background: linear-gradient(90deg, #ff3b30, #ff9500);
+      font-size: clamp(1.6rem, 4.5vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #ff3b30, #ff9500, #ff3b30);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      font-weight: 800;
-      letter-spacing: 1px;
+      animation: shine 4s linear infinite;
+    }
+    @keyframes shine {
+      to { background-position: 200% center; }
     }
 
-    /* 3D Category Buttons */
+    /* Category Buttons */
     .category-buttons {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       justify-content: center;
-      margin-bottom: 25px;
+      margin-bottom: 24px;
       flex-wrap: wrap;
     }
     .cat-btn {
-      background: linear-gradient(145deg, #1c1f2b, #212634);
-      color: #a0aec0;
+      background: linear-gradient(145deg, #1a1e2a, #222838);
+      color: #94a3b8;
       border: none;
-      padding: 12px 25px;
-      font-size: 16px;
+      padding: 11px 22px;
+      font-size: 15px;
       font-weight: 600;
-      border-radius: 30px;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.03);
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.45), -3px -3px 10px rgba(255,255,255,0.03);
     }
     .cat-btn:hover {
       color: #fff;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 6px 6px 16px rgba(0,0,0,0.5);
     }
     .cat-btn.active {
-      background: linear-gradient(145deg, #ff4136, #dc2f25);
-      color: #fff;
-      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 59, 48, 0.4);
+      background: linear-gradient(145deg, #ff4136, #e11d48);
+      color: white;
+      box-shadow: inset 2px 2px 6px rgba(0,0,0,0.35), 0 0 20px rgba(255,59,48,0.35);
     }
 
-    /* 3D Dropdown Bar */
+    /* Select */
     .select-wrapper {
-      position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     label {
       display: block;
-      margin-bottom: 10px;
-      font-size: 14px;
-      color: #8b9bb4;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #94a3b8;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       font-weight: 600;
-      margin-left: 5px;
+      margin-left: 6px;
     }
     select {
       width: 100%;
-      padding: 15px 20px;
+      padding: 15px 18px;
       font-size: 16px;
-      font-weight: 500
+      font-weight: 500;
+      background: #151922;
+      color: #e2e8f0;
+      border: 1px solid #2a3142;
+      border-radius: 14px;
+      appearance: none;
+      cursor: pointer;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+      transition: border-color 0.2s;
+    }
+    select:focus {
+      outline: none;
+      border-color: #ff3b30;
+    }
+
+    /* Player */
+    .player-container {
+      position: relative;
+      width: 100%;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      aspect-ratio: 16/9;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #000;
+    }
+
+    /* Status */
+    .status {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      color: #94a3b8;
+      min-height: 22px;
+    }
+    .status.error { color: #f87171; }
+    .status.success { color: #4ade80; }
+
+    /* Custom URL */
+    .custom-url {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .custom-url input {
+      flex: 1;
+      padding: 13px 16px;
+      background: #151922;
+      border: 1px solid #2a3142;
+      border-radius: 12px;
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+    .custom-url button {
+      padding: 13px 20px;
+      background: linear-gradient(145deg, #ff4136, #e11d48);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .custom-url button:hover {
+      transform: scale(1.03);
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="header-bar">
+      <h1>PREMIUM LIVE TV</h1>
+    </div>
+
+    <div class="category-buttons">
+      <button class="cat-btn active" onclick="filterCategory('all')">All</button>
+      <button class="cat-btn" onclick="filterCategory('news')">News</button>
+      <button class="cat-btn" onclick="filterCategory('sports')">Sports</button>
+      <button class="cat-btn" onclick="filterCategory('entertainment')">Entertainment</button>
+    </div>
+
+    <div class="select-wrapper">
+      <label>Select Channel</label>
+      <select id="channelSelect" onchange="playChannel(this.value)">
+        <option value="">-- Channel එකක් තෝරන්න --</option>
+      </select>
+    </div>
+
+    <div class="player-container">
+      <video id="video" controls playsinline></video>
+    </div>
+
+    <div class="status" id="status">Channel එකක් තෝරන්න</div>
+
+    <div class="custom-url">
+      <input type="text" id="customM3u8" placeholder="Custom m3u8 URL එකක් paste කරන්න...">
+      <button onclick="playCustom()">Play</button>
+    </div>
+  </main>
+
+  <footer>Premium Live TV Player • HLS.js</footer>
+
+  <script>
+    // Sample channels (ඔයාට මේවා change කරන්න පුළුවන්)
+    const channels = [
+      { name: "BBC News", url: "https://vs-hls-push-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news_channel_hd/pt_abr_hls_lif_w10_wa/t=3840/v=pv14/b=5070016/main.m3u8", category: "news" },
+      { name: "Al Jazeera", url: "https://live-hls-web-aje.getaj.net/AJE/index.m3u8", category: "news" },
+      { name: "NASA TV", url: "https://ntv1.akamaized.net/hls/live/2014075/NASA-NTV1-HLS/master.m3u8", category: "entertainment" },
+      { name: "Red Bull TV", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8", category: "sports" },
+      { name: "Fashion TV", url: "https://fash1043.cloudycdn.com/force/i/video_original_t_/live_1_4k.m3u8", category: "entertainment" }
+    ];
+
+    const select = document.getElementById('channelSelect');
+    const video = document.getElementById('video');
+    const statusEl = document.getElementById('status');
+    let hls = null;
+    let currentCategory = 'all';
+
+    // Load channels to dropdown
+    function loadChannels() {
+      select.innerHTML = '<option value="">-- Channel එකක් තෝරන්න --</option>';
+      channels.forEach((ch, i) => {
+        if (currentCategory === 'all' || ch.category === currentCategory) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.textContent = ch.name;
+          select.appendChild(opt);
+        }
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      loadChannels();
+    }
+
+    function playChannel(index) {
+      if (index === "") return;
+      const channel = channels[index];
+      playStream(channel.url, channel.name);
+    }
+
+    function playCustom() {
+      const url = document.getElementById('customM3u8').value.trim();
+      if (!url) {
+        statusEl.textContent = "URL එකක් දාන්න";
+        statusEl.className = "status error";
+        return;
+      }
+      playStream(url, "Custom Stream");
+    }
+
+    function playStream(url, name) {
+      statusEl.textContent = "Loading: " + name + "...";
+      statusEl.className = "status";
+
+      if (hls) {
+        hls.destroy();
+        hls = null;
+      }
+
+      if (Hls.isSupported()) {
+        hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true
+        });
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play().catch(() => {});
+          statusEl.textContent = "Playing: " + name;
+          statusEl.className = "status success";
+        });
+        
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            statusEl.textContent = "Error: Stream එක load වුණේ නැහැ";
+            statusEl.className = "status error";
+          }
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        // Safari native support
+        video.src = url;
+        video.addEventListener('loadedmetadata', () => {
+          video.play();
+          statusEl.textContent = "Playing: " + name;
+          statusEl.className = "status success";
+        });
+      } else {
+        statusEl.textContent = "Browser එක HLS support කරන්නේ නැහැ";
+        statusEl.className = "status error";
+      }
+    }
+
+    // Initial load
+    loadChannels();
+  </script>
