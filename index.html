@@ -3,116 +3,107 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Global Live TV Player</title>
+  <title>Premium Live TV Player</title>
   <link rel="icon" href="data:,">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0f1115;
-      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      /* නවීන අඳුරු පසුබිම */
+      background: linear-gradient(135deg, #0d0f14 0%, #151821 100%);
+      color: #e0e6ed;
       margin: 0;
-      padding: 20px;
+      padding: 15px;
       min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+    
     main {
       width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 850px;
+      /* 3D Glassmorphism මූලික රාමුව */
+      background: rgba(26, 30, 41, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    h1 {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      margin: 0 0 20px;
+
+    /* 3D Header Bar */
+    .header-bar {
+      background: linear-gradient(145deg, #212533, #181b25);
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 25px;
+      box-shadow:  5px 5px 15px #0b0c11, -5px -5px 15px #252a39;
       text-align: center;
-      color: #ff3b30;
+      border-bottom: 2px solid #ff3b30;
     }
-    /* අලුත් කැටගරි බොත්තම් සඳහා ඩිසයින් එක */
+    .header-bar h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      background: linear-gradient(90deg, #ff3b30, #ff9500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* 3D Category Buttons */
     .category-buttons {
       display: flex;
-      gap: 10px;
+      gap: 15px;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       flex-wrap: wrap;
     }
     .cat-btn {
-      background: #1c1f26;
-      color: #fff;
-      border: 1px solid #333;
-      padding: 12px 24px;
+      background: linear-gradient(145deg, #1c1f2b, #212634);
+      color: #a0aec0;
+      border: none;
+      padding: 12px 25px;
       font-size: 16px;
-      border-radius: 8px;
+      font-weight: 600;
+      border-radius: 30px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.03);
     }
-    .cat-btn:hover, .cat-btn.active {
-      background: #ff3b30;
-      border-color: #ff3b30;
-      box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4);
+    .cat-btn:hover {
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .cat-btn.active {
+      background: linear-gradient(145deg, #ff4136, #dc2f25);
+      color: #fff;
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 59, 48, 0.4);
+    }
+
+    /* 3D Dropdown Bar */
+    .select-wrapper {
+      position: relative;
+      margin-bottom: 20px;
     }
     label {
       display: block;
-      margin-bottom: 8px;
-      font-size: 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #8b9bb4;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-left: 5px;
     }
     select {
-      padding: 12px;
       width: 100%;
-      min-height: 48px;
+      padding: 15px 20px;
       font-size: 16px;
-      background: #1c1f26;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    select:focus-visible {
-      outline: 2px solid #ff3b30;
-      border-color: #ff3b30;
-    }
-    #status {
-      min-height: 24px;
-      margin: 12px 0 0;
-      line-height: 1.5;
-      color: #d5d5d5;
-      text-align: center;
-    }
-    #status.error { color: #ffb4a8; }
-    video {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background-color: #000;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-      border-radius: 8px;
-      margin-top: 15px;
-    }
-  </style>
-</head>
-<body>
-  <main>
-    <h1>Live TV Player</h1>
-
-    <!-- අලුත් Category Buttons -->
-    <div class="category-buttons">
-      <button id="btn-sport" class="cat-btn">⚽ Sports</button>
-      <button id="btn-movie" class="cat-btn">🎬 Movies</button>
-      <button id="btn-music" class="cat-btn">🎵 Music</button>
-    </div>
-
-    <label for="channelSelect">චැනල් එකක් තෝරන්න</label>
-    <select id="channelSelect" disabled>
-      <option value="">කාණ්ඩයක් තෝරන්න...</option>
-    </select>
-
-    <p id="status" role="status" aria-live="polite">කරුණාකර ඉහළින් කාණ්ඩයක් (Category) තෝරන්න.</p>
-
-    <video id="video" controls playsinline preload="none"></video>
-  </main>
-
-  <script src="main.js"></script>
-</body>
-</html>
+      font-weight: 500
