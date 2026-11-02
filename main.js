@@ -8,13 +8,12 @@ let hls = null;
 let playbackRequest = 0;
 let abortController = null;
 
-// බොත්තම් හඳුනාගැනීම
 const btnSport = document.getElementById("btn-sport");
 const btnMovie = document.getElementById("btn-movie");
 const btnMusic = document.getElementById("btn-music");
 
 function setStatus(message, isError = false) {
-  statusText.textContent = message;
+  statusText.textContent = "✦ " + message;
   statusText.classList.toggle("error", isError);
 }
 
@@ -68,7 +67,16 @@ function playChannel() {
   setStatus(`${channelName} පූරණය වෙමින්...`);
 
   if (window.Hls && Hls.isSupported()) {
-    hls = new Hls({ enableWorker: true, backBufferLength: 30 });
+    // Lag වීම අවම කරන Buffer සැකසුම් මෙතැනින් එකතු කර ඇත
+    hls = new Hls({ 
+      enableWorker: true, 
+      backBufferLength: 30,
+      maxBufferLength: 60, 
+      maxMaxBufferLength: 120, 
+      maxBufferSize: 60 * 1000 * 1000, 
+      liveSyncDurationCount: 5, 
+      liveMaxLatencyDurationCount: 10 
+    });
     hls.on(Hls.Events.MANIFEST_PARSED, () => attemptPlayback(channelName, requestId));
     hls.loadSource(videoSrc);
     hls.attachMedia(video);
@@ -82,7 +90,7 @@ function playChannel() {
 }
 
 async function loadChannels(playlistUrl, categoryName) {
-  if (abortController) abortController.abort(); // කලින් load වෙන එකක් තියෙනම් නවත්වන්න
+  if (abortController) abortController.abort(); 
   abortController = new AbortController();
   
   channelSelect.disabled = true;
@@ -90,7 +98,6 @@ async function loadChannels(playlistUrl, categoryName) {
   setStatus(`${categoryName} ලැයිස්තුව ලබාගනිමින්... කරුණාකර රැඳී සිටින්න.`);
 
   try {
-    // අදාළ m3u ෆයිල් එක load කිරීම
     const response = await fetch(playlistUrl, { signal: abortController.signal });
     if (!response.ok) throw new Error("Playlist request failed");
 
@@ -116,11 +123,10 @@ async function loadChannels(playlistUrl, categoryName) {
   }
 }
 
-// බොත්තම් වලට ක්‍රියාකාරීත්වය එකතු කිරීම
 function setActiveButton(activeBtn) {
   [btnSport, btnMovie, btnMusic].forEach(btn => btn.classList.remove("active"));
   activeBtn.classList.add("active");
-  resetPlayback(); // අලුත් කැටගරි එකක් තෝරනකොට ප්ලේ වෙන වීඩියෝව නවත්වන්න
+  resetPlayback();
 }
 
 btnSport.addEventListener("click", () => {
