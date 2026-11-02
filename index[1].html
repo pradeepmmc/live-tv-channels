@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="si">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Global Live TV Player</title>
+  <link rel="icon" href="data:,">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      min-height: 100dvh;
+    }
+    main {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      margin: 0 0 20px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    select {
+      padding: 12px;
+      width: 100%;
+      min-height: 48px;
+      font-size: 16px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #666;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    select:focus-visible {
+      outline: 3px solid #66aaff;
+      outline-offset: 3px;
+      border-color: #66aaff;
+    }
+    select:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+    #status {
+      min-height: 24px;
+      margin: 12px 0 0;
+      line-height: 1.5;
+      color: #d5d5d5;
+    }
+    #status.error { color: #ffb4a8; }
+    video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #000;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+    noscript {
+      display: block;
+      margin-top: 16px;
+      color: #ffb4a8;
+    }
+    @media (max-width: 480px) {
+      body { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Live TV Stations</h1>
+
+    <label for="channelSelect">චැනල් එකක් තෝරන්න</label>
+    <select id="channelSelect" disabled>
+      <option value="">චැනල් ලැයිස්තුව පූරණය වෙමින්...</option>
+    </select>
+
+    <p id="status" role="status" aria-live="polite">චැනල් ලැයිස්තුව ලබාගනිමින්...</p>
+
+    <video id="video" controls playsinline preload="none"></video>
+
+    <noscript>මෙම player එක භාවිතා කිරීමට JavaScript සක්‍රීය කළ යුතුය.</noscript>
+  </main>
+
+  <script src="./src/main.js"></script>
+</body>
+</html>
