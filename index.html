@@ -10,7 +10,7 @@
     * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
-      background-color: #111;
+      background-color: #0f1115;
       color: #fff;
       margin: 0;
       padding: 20px;
@@ -25,6 +25,33 @@
       font-size: clamp(1.5rem, 4vw, 2rem);
       margin: 0 0 20px;
       text-align: center;
+      color: #ff3b30;
+    }
+    /* අලුත් කැටගරි බොත්තම් සඳහා ඩිසයින් එක */
+    .category-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .cat-btn {
+      background: #1c1f26;
+      color: #fff;
+      border: 1px solid #333;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      background: #ff3b30;
+      border-color: #ff3b30;
+      box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4);
     }
     label {
       display: block;
@@ -36,26 +63,22 @@
       width: 100%;
       min-height: 48px;
       font-size: 16px;
-      background: #222;
+      background: #1c1f26;
       color: #fff;
-      border: 1px solid #666;
+      border: 1px solid #444;
       border-radius: 5px;
       cursor: pointer;
     }
     select:focus-visible {
-      outline: 3px solid #66aaff;
-      outline-offset: 3px;
-      border-color: #66aaff;
-    }
-    select:disabled {
-      cursor: wait;
-      opacity: 0.7;
+      outline: 2px solid #ff3b30;
+      border-color: #ff3b30;
     }
     #status {
       min-height: 24px;
       margin: 12px 0 0;
       line-height: 1.5;
       color: #d5d5d5;
+      text-align: center;
     }
     #status.error { color: #ffb4a8; }
     video {
@@ -63,36 +86,33 @@
       width: 100%;
       aspect-ratio: 16 / 9;
       background-color: #000;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
       border-radius: 8px;
-      margin-top: 12px;
-    }
-    noscript {
-      display: block;
-      margin-top: 16px;
-      color: #ffb4a8;
-    }
-    @media (max-width: 480px) {
-      body { padding: 16px; }
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>Live TV Stations</h1>
+    <h1>Live TV Player</h1>
+
+    <!-- අලුත් Category Buttons -->
+    <div class="category-buttons">
+      <button id="btn-sport" class="cat-btn">⚽ Sports</button>
+      <button id="btn-movie" class="cat-btn">🎬 Movies</button>
+      <button id="btn-music" class="cat-btn">🎵 Music</button>
+    </div>
 
     <label for="channelSelect">චැනල් එකක් තෝරන්න</label>
     <select id="channelSelect" disabled>
-      <option value="">චැනල් ලැයිස්තුව පූරණය වෙමින්...</option>
+      <option value="">කාණ්ඩයක් තෝරන්න...</option>
     </select>
 
-    <p id="status" role="status" aria-live="polite">චැනල් ලැයිස්තුව ලබාගනිමින්...</p>
+    <p id="status" role="status" aria-live="polite">කරුණාකර ඉහළින් කාණ්ඩයක් (Category) තෝරන්න.</p>
 
     <video id="video" controls playsinline preload="none"></video>
-
-    <noscript>මෙම player එක භාවිතා කිරීමට JavaScript සක්‍රීය කළ යුතුය.</noscript>
   </main>
 
-  <script src="./src/main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
