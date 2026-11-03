@@ -14,6 +14,7 @@ const btnMovie    = document.getElementById("btn-movie");
 const btnMusic    = document.getElementById("btn-music");
 const btnPreach   = document.getElementById("btn-preach");
 const btnSrilanka = document.getElementById("btn-srilanka");
+const btnAnimal   = document.getElementById("btn-animal");
 
 function setStatus(message, isError = false) {
   statusText.innerHTML = `<span>✦ ${message}</span>`;
@@ -194,7 +195,7 @@ async function loadChannels(playlistUrl, categoryName) {
 }
 
 function setActiveButton(activeBtn) {
-  [btnSport, btnMovie, btnMusic, btnPreach, btnSrilanka].forEach(btn => {
+  [btnSport, btnMovie, btnMusic, btnPreach, btnSrilanka, btnAnimal].forEach(btn => {
     if (btn) btn.classList.remove("active");
   });
   if (activeBtn) activeBtn.classList.add("active");
@@ -227,16 +228,16 @@ btnPreach.addEventListener("click", () => {
   loadChannels("https://iptv-org.github.io/iptv/categories/religious.m3u", "Preaching ✝️");
 });
 
-// 5. Sri Lanka  ← මෙතන ඔයාගේ GitHub Raw Link එක දාන්න
+// 5. Sri Lanka
 btnSrilanka.addEventListener("click", () => {
   setActiveButton(btnSrilanka);
-
-  // ===== මෙතන ඔයාගේ GitHub Raw Link එක දාන්න =====
-  // උදාහරණය: https://raw.githubusercontent.com/USERNAME/REPO/main/lanka.m3u
   loadChannels("https://iptv-org.github.io/iptv/countries/lk.m3u", "Sri Lanka 🇱🇰");
-  
-  // ඔයාගේ ගොනුව භාවිතා කරන්න ඕන නම් ඉහත රේඛාව comment කරලා පහත එක uncomment කරන්න:
-  // loadChannels("https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/lanka.m3u", "Sri Lanka 🇱🇰");
+});
+
+// 6. Animals
+btnAnimal.addEventListener("click", () => {
+  setActiveButton(btnAnimal);
+  loadChannels("https://iptv-org.github.io/iptv/categories/documentary.m3u", "Animals & Nature 🦁");
 });
 
 channelSelect.addEventListener("change", playChannel);
