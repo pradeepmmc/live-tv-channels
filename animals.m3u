@@ -1,0 +1,29 @@
+#EXTM3U
+#PLAYLIST:Animals & Wildlife Channels
+
+#EXTINF:-1 group-title="Animals",Love Nature 4K
+https://d18dyiy2xq7a4e.cloudfront.net/playlist.m3u8
+
+#EXTINF:-1 group-title="Animals",Nat Geo Wild (Sample)
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/NGEOWHD/default/NGEOWHD.m3u8
+
+#EXTINF:-1 group-title="Animals",Wildlife TV
+https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-wildlife-lightningtv/playlist.m3u8
+
+#EXTINF:-1 group-title="Animals",ZooMoo
+https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index.m3u8
+
+#EXTINF:-1 group-title="Animals",Earth Channel
+https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-earth-lightningtv/playlist.m3u8
+
+#EXTINF:-1 group-title="Animals",Nature Time
+https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-nature-lightningtv/playlist.m3u8
+
+#EXTINF:-1 group-title="Animals",Wild Earth
+https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01076-lightningintern-wildearth-lightningtv/playlist.m3u8
+
+#EXTINF:-1 group-title="Animals",Pluto TV Animals
+https://jmp2.uk/plu-5f4d86f519358a00072b978e.m3u8
+
+#EXTINF:-1 group-title="Animals",Animal Planet Style
+https://d1g8wgjurz8via.cloudfront.net/bpk-tv/APLHD/default/APLHD.m3u8
