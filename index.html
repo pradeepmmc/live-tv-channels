@@ -22,21 +22,20 @@
 
     main {
       width: 100%;
-      max-width: 900px;
-      background: rgba(26, 30, 41, 0.7);
+      max-width: 920px;
+      background: rgba(26, 30, 41, 0.75);
       backdrop-filter: blur(12px);
       border-radius: 20px;
-      padding: 25px;
+      padding: 24px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    /* Header */
     .header-bar {
       background: linear-gradient(145deg, #212533, #181b25);
       border-radius: 14px;
       padding: 16px 22px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       box-shadow: 5px 5px 15px #0b0c11, -5px -5px 15px #252a39;
       text-align: center;
       border-bottom: 3px solid #ff3b30;
@@ -44,22 +43,20 @@
 
     .header-bar h1 {
       margin: 0;
-      font-size: clamp(1.4rem, 4vw, 1.9rem);
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
       background: linear-gradient(90deg, #ff3b30, #ff9500);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       font-weight: 800;
       letter-spacing: 1px;
-      text-shadow: 0 2px 8px rgba(255, 59, 48, 0.3);
     }
 
-    /* Category Buttons */
     .category-buttons {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       justify-content: center;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
@@ -67,49 +64,47 @@
       background: linear-gradient(145deg, #1c1f2b, #212634);
       color: #a0aec0;
       border: none;
-      padding: 11px 20px;
-      font-size: 15px;
+      padding: 10px 16px;
+      font-size: 14px;
       font-weight: 600;
       border-radius: 30px;
       cursor: pointer;
       transition: all 0.25s ease;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.35), -3px -3px 8px rgba(255, 255, 255, 0.03);
     }
 
     .cat-btn:hover {
       color: #fff;
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     }
 
     .cat-btn.active {
       background: linear-gradient(145deg, #ff4136, #dc2f25);
       color: #fff;
-      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 18px rgba(255, 59, 48, 0.45);
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 16px rgba(255, 59, 48, 0.4);
     }
 
-    /* Select */
     .select-wrapper {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
+      margin-bottom: 7px;
+      font-size: 12px;
       color: #8b9bb4;
       text-transform: uppercase;
       letter-spacing: 1px;
       font-weight: 600;
-      margin-left: 4px;
+      margin-left: 3px;
     }
 
     select {
       width: 100%;
-      padding: 14px 18px;
+      padding: 13px 16px;
       font-size: 15px;
       font-weight: 500;
       background: #1a1e29;
@@ -120,9 +115,8 @@
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b9bb4' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 16px center;
+      background-position: right 14px center;
       cursor: pointer;
-      transition: border-color 0.2s;
     }
 
     select:focus {
@@ -130,25 +124,22 @@
     }
 
     select:disabled {
-      opacity: 0.6;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
-    /* Status */
     #status {
       text-align: center;
-      font-size: 14px;
+      font-size: 13.5px;
       color: #8b9bb4;
-      margin-bottom: 16px;
-      min-height: 22px;
-      transition: color 0.2s;
+      margin-bottom: 14px;
+      min-height: 20px;
     }
 
     #status.error {
       color: #ff6b6b;
     }
 
-    /* Player */
     .player-container {
       position: relative;
       width: 100%;
@@ -167,18 +158,16 @@
       object-fit: contain;
     }
 
-    /* Footer note */
     .footer-note {
       text-align: center;
-      margin-top: 18px;
+      margin-top: 16px;
       font-size: 12px;
       color: #5a6577;
     }
 
     @media (max-width: 600px) {
-      main { padding: 16px; }
-      .cat-btn { padding: 10px 16px; font-size: 14px; }
-      .header-bar h1 { font-size: 1.3rem; }
+      main { padding: 15px; }
+      .cat-btn { padding: 9px 13px; font-size: 13px; }
     }
   </style>
 </head>
@@ -192,7 +181,7 @@
       <button id="btn-sport" class="cat-btn">⚽ Sports</button>
       <button id="btn-movie" class="cat-btn">🎬 Movies</button>
       <button id="btn-music" class="cat-btn">🎵 Music</button>
-      <button id="btn-preach" class="cat-btn">✝️ Preaching</button> 
+      <button id="btn-preach" class="cat-btn">✝️ Preaching</button>
       <button id="btn-srilanka" class="cat-btn">🇱🇰 Sri Lanka</button>
     </div>
 
@@ -210,7 +199,7 @@
     </div>
 
     <div class="footer-note">
-      Free public streams • Sports • Movies • Music • Christian Preaching
+      Free public streams • Sports • Movies • Music • Preaching • Sri Lanka
     </div>
   </main>
 
