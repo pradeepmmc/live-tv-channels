@@ -8,9 +8,11 @@ let hls = null;
 let playbackRequest = 0;
 let abortController = null;
 
-const btnSport = document.getElementById("btn-sport");
-const btnMovie = document.getElementById("btn-movie");
-const btnMusic = document.getElementById("btn-music");
+// Buttons
+const btnSport   = document.getElementById("btn-sport");
+const btnMovie   = document.getElementById("btn-movie");
+const btnMusic   = document.getElementById("btn-music");
+const btnPreach  = document.getElementById("btn-preach"); // Christian / Preaching
 
 function setStatus(message, isError = false) {
   statusText.innerHTML = `<span>✦ ${message}</span>`;
@@ -172,6 +174,9 @@ async function loadChannels(playlistUrl, categoryName) {
       }
     }
 
+    // Name අනුව sort
+    uniqueChannels.sort((a, b) => a.name.localeCompare(b.name));
+
     for (const channel of uniqueChannels) {
       fragment.appendChild(new Option(channel.name, channel.url));
     }
@@ -188,25 +193,45 @@ async function loadChannels(playlistUrl, categoryName) {
 }
 
 function setActiveButton(activeBtn) {
-  [btnSport, btnMovie, btnMusic].forEach(btn => btn.classList.remove("active"));
-  activeBtn.classList.add("active");
+  [btnSport, btnMovie, btnMusic, btnPreach].forEach(btn => {
+    if (btn) btn.classList.remove("active");
+  });
+  if (activeBtn) activeBtn.classList.add("active");
   resetPlayback();
 }
 
-// ===== Updated to better (lower lag) sources =====
+// ===== 4 Categories (වෙන වෙනම) =====
+
+// 1. Sports
 btnSport.addEventListener("click", () => {
   setActiveButton(btnSport);
   loadChannels("https://iptv-org.github.io/iptv/categories/sports.m3u", "Sports ⚽");
 });
 
+// 2. Movies
 btnMovie.addEventListener("click", () => {
   setActiveButton(btnMovie);
   loadChannels("https://iptv-org.github.io/iptv/categories/movies.m3u", "Movies 🎬");
 });
 
+// 3. Music
 btnMusic.addEventListener("click", () => {
   setActiveButton(btnMusic);
   loadChannels("https://iptv-org.github.io/iptv/categories/music.m3u", "Music 🎵");
 });
 
+// 4. Preaching / Christian
+btnPreach.addEventListener("click", () => {
+  setActiveButton(btnPreach);
+  loadChannels("https://iptv-org.github.io/iptv/categories/religious.m3u", "Preaching ✝️");
+});
+
 channelSelect.addEventListener("change", playChannel);
+
+// Page load වෙද්දී Sports automatically load කරන්න (optional)
+window.addEventListener("DOMContentLoaded", () => {
+  if (btnSport) {
+    setActiveButton(btnSport);
+    loadChannels("https://iptv-org.github.io/iptv/categories/sports.m3u", "Sports ⚽");
+  }
+});
