@@ -226,6 +226,14 @@ btnPreach.addEventListener("click", () => {
   loadChannels("https://iptv-org.github.io/iptv/categories/religious.m3u", "Preaching ✝️");
 });
 
+const btnSrilanka = document.getElementById("btn-srilanka");
+btnSrilanka.addEventListener("click", () => {
+  setActiveButton(btnSrilanka);
+  // GitHub raw link එක හෝ local file
+  loadChannels("https://iptv-org.github.io/iptv/countries/lk.m3u", "Sri Lanka 🇱🇰");
+  // හෝ ඔයාගේ ගොනුව: loadChannels("sri-lanka.m3u", "Sri Lanka 🇱🇰");
+});
+
 channelSelect.addEventListener("change", playChannel);
 
 // Page load වෙද්දී Sports automatically load කරන්න (optional)
