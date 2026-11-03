@@ -13,21 +13,31 @@ const btnMovie = document.getElementById("btn-movie");
 const btnMusic = document.getElementById("btn-music");
 
 function setStatus(message, isError = false) {
-  statusText.textContent = "✦ " + message;
+  statusText.innerHTML = `<span>✦ ${message}</span>`;
   statusText.classList.toggle("error", isError);
 }
 
 function parsePlaylist(playlistText) {
   const channels = [];
   let currentName = "";
+
   for (const rawLine of playlistText.split(/\r?\n/)) {
     const line = rawLine.trim();
+
     if (line.startsWith("#EXTINF:")) {
-      currentName = line.slice(line.lastIndexOf(",") + 1).trim();
+      // නම හොඳට ගන්න
+      const commaIndex = line.lastIndexOf(",");
+      currentName = commaIndex !== -1 ? line.slice(commaIndex + 1).trim() : "Unknown";
       continue;
     }
+
     if (/^https?:\/\//i.test(line)) {
-      channels.push({ name: currentName || "Unknown Channel", url: line });
+      if (currentName) {
+        channels.push({
+          name: currentName,
+          url: line
+        });
+      }
       currentName = "";
     }
   }
@@ -47,9 +57,13 @@ function resetPlayback() {
 async function attemptPlayback(channelName, requestId) {
   try {
     await video.play();
-    if (requestId === playbackRequest) setStatus(`දැන් ධාවනය වෙමින්: ${channelName}`);
+    if (requestId === playbackRequest) {
+      setStatus(`දැන් ධාවනය වෙමින්: ${channelName}`);
+    }
   } catch (error) {
-    if (requestId === playbackRequest) setStatus("චැනල් එක සූදානම්. Play බොත්තම ඔබන්න.");
+    if (requestId === playbackRequest) {
+      setStatus("චැනල් එක සූදානම්. Play බොත්තම ඔබන්න.");
+    }
   }
 }
 
@@ -60,41 +74,91 @@ function playChannel() {
   const requestId = ++playbackRequest;
 
   resetPlayback();
+
   if (!videoSrc) {
     setStatus("Play කිරීමට චැනල් එකක් තෝරන්න.");
     return;
   }
+
   setStatus(`${channelName} පූරණය වෙමින්...`);
 
   if (window.Hls && Hls.isSupported()) {
-    // Lag වීම අවම කරන Buffer සැකසුම් මෙතැනින් එකතු කර ඇත
-    hls = new Hls({ 
-      enableWorker: true, 
-      backBufferLength: 30,
-      maxBufferLength: 60, 
-      maxMaxBufferLength: 120, 
-      maxBufferSize: 60 * 1000 * 1000, 
-      liveSyncDurationCount: 5, 
-      liveMaxLatencyDurationCount: 10 
+    hls = new Hls({
+      enableWorker: true,
+      lowLatencyMode: true,
+
+      // ===== Lag අඩු කරන Buffer Settings =====
+      maxBufferLength: 20,          // අඩු buffer = අඩු lag
+      maxMaxBufferLength: 40,
+      maxBufferSize: 30 * 1000 * 1000,
+      maxBufferHole: 0.5,
+      highBufferWatchdogPeriod: 1,
+
+      // Live stream සඳහා
+      liveSyncDurationCount: 3,
+      liveMaxLatencyDurationCount: 6,
+      liveDurationInfinity: true,
+
+      // Fast start
+      startLevel: -1,
+      abrEwmaDefaultEstimate: 500000,
+      abrBandWidthFactor: 0.8,
+      abrBandWidthUpFactor: 0.7,
+
+      // Error recovery
+      manifestLoadingTimeOut: 10000,
+      manifestLoadingMaxRetry: 3,
+      levelLoadingTimeOut: 10000,
+      levelLoadingMaxRetry: 3,
+      fragLoadingTimeOut: 15000,
+      fragLoadingMaxRetry: 4
     });
-    hls.on(Hls.Events.MANIFEST_PARSED, () => attemptPlayback(channelName, requestId));
+
     hls.loadSource(videoSrc);
     hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      attemptPlayback(channelName, requestId);
+    });
+
+    // Auto recover from errors
+    hls.on(Hls.Events.ERROR, function (event, data) {
+      if (data.fatal) {
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            console.log("Network error - trying to recover");
+            hls.startLoad();
+            setStatus("Network error... නැවත උත්සාහ කරමින්", true);
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            console.log("Media error - trying to recover");
+            hls.recoverMediaError();
+            setStatus("Media error... නැවත උත්සාහ කරමින්", true);
+            break;
+          default:
+            setStatus("Stream එක load වුණේ නැහැ. වෙනත් channel එකක් try කරන්න.", true);
+            hls.destroy();
+            break;
+        }
+      }
+    });
+
     return;
   }
+
+  // Safari support
   if (video.canPlayType("application/vnd.apple.mpegurl")) {
     video.src = videoSrc;
     video.addEventListener("loadedmetadata", () => attemptPlayback(channelName, requestId), { once: true });
-    return;
   }
 }
 
 async function loadChannels(playlistUrl, categoryName) {
-  if (abortController) abortController.abort(); 
+  if (abortController) abortController.abort();
   abortController = new AbortController();
-  
+
   channelSelect.disabled = true;
-  channelSelect.innerHTML = '<option value="">ලැයිස්තුව ලබාගනිමින්...</option>';
+  channelSelect.innerHTML = `<option value="">ලැයිස්තුව ලබාගනිමින්...</option>`;
   setStatus(`${categoryName} ලැයිස්තුව ලබාගනිමින්... කරුණාකර රැඳී සිටින්න.`);
 
   try {
@@ -108,13 +172,26 @@ async function loadChannels(playlistUrl, categoryName) {
 
     const fragment = document.createDocumentFragment();
     fragment.appendChild(new Option(`${categoryName} චැනල් එකක් තෝරන්න...`, ""));
-    for (const channel of channels) {
+
+    // Duplicate names ඉවත් කරලා
+    const uniqueChannels = [];
+    const seen = new Set();
+
+    for (const ch of channels) {
+      const key = ch.name.toLowerCase();
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueChannels.push(ch);
+      }
+    }
+
+    for (const channel of uniqueChannels) {
       fragment.appendChild(new Option(channel.name, channel.url));
     }
-    
+
     channelSelect.replaceChildren(fragment);
     channelSelect.disabled = false;
-    setStatus(`${categoryName} චැනල් ${channels.length.toLocaleString()}ක් ලබාගත්තා. චැනල් එකක් තෝරන්න.`);
+    setStatus(`${categoryName} චැනල් ${uniqueChannels.length.toLocaleString()}ක් ලබාගත්තා. චැනල් එකක් තෝරන්න.`);
   } catch (error) {
     if (error.name !== "AbortError") {
       channelSelect.replaceChildren(new Option("ලැයිස්තුව ලබාගත නොහැක", ""));
