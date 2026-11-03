@@ -1,0 +1,38 @@
+#EXTM3U
+#PLAYLIST:Christian Preaching Channels
+
+#EXTINF:-1 tvg-logo="https://i.imgur.com/16DMxP4.png" group-title="Preaching",3ABN English
+https://3abn.bozztv.com/3abn2/3abn_live/smil:3abn_live.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="https://i.imgur.com/zUMUNhe.png" group-title="Preaching",3ABN Proclaim Network
+https://3abn.bozztv.com/3abn2/Pro_live/smil:Pro_live.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="https://i.imgur.com/IecOZHR.png" group-title="Preaching",3ABN International
+https://3abn.bozztv.com/3abn2/Int_live/smil:Int_live.smil/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="https://i.imgur.com/U99CsEc.png" group-title="Preaching",3ABN Canada
+https://3abn.bozztv.com/3abncanada/3ABN/master.m3u8
+
+#EXTINF:-1 group-title="Preaching",GOD TV
+https://ott.god.tv/live/us/master.m3u8
+
+#EXTINF:-1 group-title="Preaching",Gospel Broadcasting Network (GBN)
+https://cdn3.wowza.com/5/Ny9jK1A1Q3h4N1VZ/live/myStream/playlist.m3u8
+
+#EXTINF:-1 group-title="Preaching",Hope Channel
+https://jstre.am/live/jsl:UP9KAdlVrm8.m3u8
+
+#EXTINF:-1 group-title="Preaching",Catholic TV
+https://catholictvhd-lh.akamaized.net/hls/live/2043390/CTVLiveHD/master.m3u8
+
+#EXTINF:-1 group-title="Preaching",Gospel Truth TV
+https://na.linear.zype.com/bf94f9f4-383c-40e0-9d49-279a4f33ab8d/f29b8836-d990-4c8d-b421-192a8f43edc4-zype/manifest.m3u8
+
+#EXTINF:-1 group-title="Preaching",It Is Written TV
+https://2-fss-2.streamhoster.com/pl_118/201450-1248872-1/playlist.m3u8
+
+#EXTINF:-1 group-title="Preaching",Alkarma TV
+https://58cc65c534c67.streamlock.net/alkarmatv.com/alkarmapa.smil/playlist.m3u8
+
+#EXTINF:-1 group-title="Preaching",3ABN Praise Him Music
+https://3abn.bozztv.com/3abn1/PraiseHim/smil:PraiseHim.smil/playlist.m3u8
