@@ -9,10 +9,11 @@ let playbackRequest = 0;
 let abortController = null;
 
 // Buttons
-const btnSport   = document.getElementById("btn-sport");
-const btnMovie   = document.getElementById("btn-movie");
-const btnMusic   = document.getElementById("btn-music");
-const btnPreach  = document.getElementById("btn-preach"); // Christian / Preaching
+const btnSport    = document.getElementById("btn-sport");
+const btnMovie    = document.getElementById("btn-movie");
+const btnMusic    = document.getElementById("btn-music");
+const btnPreach   = document.getElementById("btn-preach");
+const btnSrilanka = document.getElementById("btn-srilanka");
 
 function setStatus(message, isError = false) {
   statusText.innerHTML = `<span>✦ ${message}</span>`;
@@ -174,7 +175,6 @@ async function loadChannels(playlistUrl, categoryName) {
       }
     }
 
-    // Name අනුව sort
     uniqueChannels.sort((a, b) => a.name.localeCompare(b.name));
 
     for (const channel of uniqueChannels) {
@@ -187,20 +187,21 @@ async function loadChannels(playlistUrl, categoryName) {
   } catch (error) {
     if (error.name !== "AbortError") {
       channelSelect.replaceChildren(new Option("ලැයිස්තුව ලබාගත නොහැක", ""));
-      setStatus(`${categoryName} ලැයිස්තුව ලබාගැනීමට නොහැක.`, true);
+      setStatus(`${categoryName} ලැයිස්තුව ලබාගැනීමට නොහැක. Link එක පරීක්ෂා කරන්න.`, true);
+      console.error(error);
     }
   }
 }
 
 function setActiveButton(activeBtn) {
-  [btnSport, btnMovie, btnMusic, btnPreach].forEach(btn => {
+  [btnSport, btnMovie, btnMusic, btnPreach, btnSrilanka].forEach(btn => {
     if (btn) btn.classList.remove("active");
   });
   if (activeBtn) activeBtn.classList.add("active");
   resetPlayback();
 }
 
-// ===== 4 Categories (වෙන වෙනම) =====
+// ===== Categories =====
 
 // 1. Sports
 btnSport.addEventListener("click", () => {
@@ -220,23 +221,27 @@ btnMusic.addEventListener("click", () => {
   loadChannels("https://iptv-org.github.io/iptv/categories/music.m3u", "Music 🎵");
 });
 
-// 4. Preaching / Christian
+// 4. Preaching
 btnPreach.addEventListener("click", () => {
   setActiveButton(btnPreach);
   loadChannels("https://iptv-org.github.io/iptv/categories/religious.m3u", "Preaching ✝️");
 });
 
-const btnSrilanka = document.getElementById("btn-srilanka");
+// 5. Sri Lanka  ← මෙතන ඔයාගේ GitHub Raw Link එක දාන්න
 btnSrilanka.addEventListener("click", () => {
   setActiveButton(btnSrilanka);
-  // GitHub raw link එක හෝ local file
+
+  // ===== මෙතන ඔයාගේ GitHub Raw Link එක දාන්න =====
+  // උදාහරණය: https://raw.githubusercontent.com/USERNAME/REPO/main/lanka.m3u
   loadChannels("https://iptv-org.github.io/iptv/countries/lk.m3u", "Sri Lanka 🇱🇰");
-  // හෝ ඔයාගේ ගොනුව: loadChannels("sri-lanka.m3u", "Sri Lanka 🇱🇰");
+  
+  // ඔයාගේ ගොනුව භාවිතා කරන්න ඕන නම් ඉහත රේඛාව comment කරලා පහත එක uncomment කරන්න:
+  // loadChannels("https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/lanka.m3u", "Sri Lanka 🇱🇰");
 });
 
 channelSelect.addEventListener("change", playChannel);
 
-// Page load වෙද්දී Sports automatically load කරන්න (optional)
+// Page load වෙද්දී Sports load කරන්න
 window.addEventListener("DOMContentLoaded", () => {
   if (btnSport) {
     setActiveButton(btnSport);
