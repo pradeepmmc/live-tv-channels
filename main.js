@@ -25,7 +25,6 @@ function parsePlaylist(playlistText) {
     const line = rawLine.trim();
 
     if (line.startsWith("#EXTINF:")) {
-      // නම හොඳට ගන්න
       const commaIndex = line.lastIndexOf(",");
       currentName = commaIndex !== -1 ? line.slice(commaIndex + 1).trim() : "Unknown";
       continue;
@@ -86,29 +85,20 @@ function playChannel() {
     hls = new Hls({
       enableWorker: true,
       lowLatencyMode: true,
-
-      // ===== Lag අඩු කරන Buffer Settings =====
-      maxBufferLength: 20,          // අඩු buffer = අඩු lag
-      maxMaxBufferLength: 40,
-      maxBufferSize: 30 * 1000 * 1000,
-      maxBufferHole: 0.5,
-      highBufferWatchdogPeriod: 1,
-
-      // Live stream සඳහා
+      maxBufferLength: 18,
+      maxMaxBufferLength: 35,
+      maxBufferSize: 25 * 1000 * 1000,
+      maxBufferHole: 0.4,
       liveSyncDurationCount: 3,
       liveMaxLatencyDurationCount: 6,
       liveDurationInfinity: true,
-
-      // Fast start
       startLevel: -1,
       abrEwmaDefaultEstimate: 500000,
-      abrBandWidthFactor: 0.8,
-      abrBandWidthUpFactor: 0.7,
-
-      // Error recovery
-      manifestLoadingTimeOut: 10000,
+      abrBandWidthFactor: 0.75,
+      abrBandWidthUpFactor: 0.65,
+      manifestLoadingTimeOut: 12000,
       manifestLoadingMaxRetry: 3,
-      levelLoadingTimeOut: 10000,
+      levelLoadingTimeOut: 12000,
       levelLoadingMaxRetry: 3,
       fragLoadingTimeOut: 15000,
       fragLoadingMaxRetry: 4
@@ -121,17 +111,14 @@ function playChannel() {
       attemptPlayback(channelName, requestId);
     });
 
-    // Auto recover from errors
     hls.on(Hls.Events.ERROR, function (event, data) {
       if (data.fatal) {
         switch (data.type) {
           case Hls.ErrorTypes.NETWORK_ERROR:
-            console.log("Network error - trying to recover");
             hls.startLoad();
             setStatus("Network error... නැවත උත්සාහ කරමින්", true);
             break;
           case Hls.ErrorTypes.MEDIA_ERROR:
-            console.log("Media error - trying to recover");
             hls.recoverMediaError();
             setStatus("Media error... නැවත උත්සාහ කරමින්", true);
             break;
@@ -179,7 +166,7 @@ async function loadChannels(playlistUrl, categoryName) {
 
     for (const ch of channels) {
       const key = ch.name.toLowerCase();
-      if (!seen.has(key)) {
+      if (!seen.has(key) && ch.url.startsWith("http")) {
         seen.add(key);
         uniqueChannels.push(ch);
       }
@@ -206,19 +193,20 @@ function setActiveButton(activeBtn) {
   resetPlayback();
 }
 
+// ===== Updated to better (lower lag) sources =====
 btnSport.addEventListener("click", () => {
   setActiveButton(btnSport);
-  loadChannels("sport.m3u", "Sports ⚽");
+  loadChannels("https://iptv-org.github.io/iptv/categories/sports.m3u", "Sports ⚽");
 });
 
 btnMovie.addEventListener("click", () => {
   setActiveButton(btnMovie);
-  loadChannels("movie.m3u", "Movies 🎬");
+  loadChannels("https://iptv-org.github.io/iptv/categories/movies.m3u", "Movies 🎬");
 });
 
 btnMusic.addEventListener("click", () => {
   setActiveButton(btnMusic);
-  loadChannels("music.m3u", "Music 🎵");
+  loadChannels("https://iptv-org.github.io/iptv/categories/music.m3u", "Music 🎵");
 });
 
 channelSelect.addEventListener("change", playChannel);
