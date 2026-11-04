@@ -241,14 +241,24 @@ btnAnimal.addEventListener("click", () => {
   loadChannels("https://iptv-org.github.io/iptv/categories/documentary.m3u", "Animals & Nature 🦁");
 });
 
-// 7. Adult 18+
+// 7. Adult 18+ (Password Protected)
 btnAdult.addEventListener("click", () => {
   setActiveButton(btnAdult);
-  // Local file භාවිතා කරනවා නම්:
-  // loadChannels("adult.m3u", "Adult 18+ 🔥");
-  
-  // Public list:
-  loadChannels("https://raw.githubusercontent.com/kilirushi/iptv/master/us_adultiptv.m3u", "Adult 18+ 🔥");
+
+  const correctPassword = "mylife2026";
+
+  const userPassword = prompt("18+ channels බලන්න password එක ඇතුළත් කරන්න:");
+
+  if (userPassword === correctPassword) {
+    // Password නිවැරදි නම් local adult.m3u load කරනවා
+    loadChannels("adult.m3u", "Adult 18+ 🔥");
+  } else if (userPassword !== null) {
+    setStatus("Password වැරදියි. Access denied.", true);
+    channelSelect.innerHTML = `<option value="">Access Denied</option>`;
+    channelSelect.disabled = true;
+  } else {
+    setStatus("18+ access cancelled.");
+  }
 });
 
 channelSelect.addEventListener("change", playChannel);
