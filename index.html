@@ -87,6 +87,16 @@
       box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 16px rgba(255, 59, 48, 0.4);
     }
 
+    #btn-unlock {
+      background: linear-gradient(145deg, #1a1d28, #222633);
+      color: #666;
+      font-size: 14px;
+    }
+
+    #btn-unlock:hover {
+      color: #aaa;
+    }
+
     .select-wrapper {
       margin-bottom: 14px;
     }
@@ -184,7 +194,12 @@
       <button id="btn-preach" class="cat-btn">✝️ Preaching</button>
       <button id="btn-srilanka" class="cat-btn">🇱🇰 Sri Lanka</button>
       <button id="btn-animal" class="cat-btn">🦁 Animals</button>
-      <button id="btn-adult" class="cat-btn">🔥 18+</button>
+
+      <!-- 18+ button - මුලින් hidden -->
+      <button id="btn-adult" class="cat-btn" style="display: none;">🔥 18+</button>
+
+      <!-- Unlock button -->
+      <button id="btn-unlock" class="cat-btn">🔓</button>
     </div>
 
     <div class="select-wrapper">
@@ -201,7 +216,7 @@
     </div>
 
     <div class="footer-note">
-      Free public streams • Sports • Movies • Music • Preaching • Sri Lanka • Animals • 18+
+      Free public streams • Sports • Movies • Music • Preaching • Sri Lanka • Animals
     </div>
   </main>
 
