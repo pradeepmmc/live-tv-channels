@@ -15,6 +15,7 @@ const btnMusic    = document.getElementById("btn-music");
 const btnPreach   = document.getElementById("btn-preach");
 const btnSrilanka = document.getElementById("btn-srilanka");
 const btnAnimal   = document.getElementById("btn-animal");
+const btnAdult    = document.getElementById("btn-adult");
 
 function setStatus(message, isError = false) {
   statusText.innerHTML = `<span>✦ ${message}</span>`;
@@ -195,7 +196,7 @@ async function loadChannels(playlistUrl, categoryName) {
 }
 
 function setActiveButton(activeBtn) {
-  [btnSport, btnMovie, btnMusic, btnPreach, btnSrilanka, btnAnimal].forEach(btn => {
+  [btnSport, btnMovie, btnMusic, btnPreach, btnSrilanka, btnAnimal, btnAdult].forEach(btn => {
     if (btn) btn.classList.remove("active");
   });
   if (activeBtn) activeBtn.classList.add("active");
@@ -238,6 +239,16 @@ btnSrilanka.addEventListener("click", () => {
 btnAnimal.addEventListener("click", () => {
   setActiveButton(btnAnimal);
   loadChannels("https://iptv-org.github.io/iptv/categories/documentary.m3u", "Animals & Nature 🦁");
+});
+
+// 7. Adult 18+
+btnAdult.addEventListener("click", () => {
+  setActiveButton(btnAdult);
+  // Local file භාවිතා කරනවා නම්:
+  // loadChannels("adult.m3u", "Adult 18+ 🔥");
+  
+  // Public list:
+  loadChannels("https://raw.githubusercontent.com/kilirushi/iptv/master/us_adultiptv.m3u", "Adult 18+ 🔥");
 });
 
 channelSelect.addEventListener("change", playChannel);
