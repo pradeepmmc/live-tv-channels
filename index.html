@@ -3,222 +3,227 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Premium Live TV Player</title>
+  <title>Premium Live TV</title>
   <link rel="icon" href="data:,">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0d0f14 0%, #151821 100%);
-      color: #e0e6ed;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0b0b0f;
+      color: #fff;
       min-height: 100dvh;
+    }
+
+    /* Top Nav */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      padding: 15px;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
+      backdrop-filter: blur(10px);
     }
 
-    main {
-      width: 100%;
-      max-width: 960px;
-      background: rgba(26, 30, 41, 0.75);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .header-bar {
-      background: linear-gradient(145deg, #212533, #181b25);
-      border-radius: 14px;
-      padding: 16px 22px;
-      margin-bottom: 20px;
-      box-shadow: 5px 5px 15px #0b0c11, -5px -5px 15px #252a39;
-      text-align: center;
-      border-bottom: 3px solid #ff3b30;
-    }
-
-    .header-bar h1 {
-      margin: 0;
-      font-size: clamp(1.35rem, 4vw, 1.85rem);
-      background: linear-gradient(90deg, #ff3b30, #ff9500);
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #e50914, #ff6b00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      font-weight: 800;
       letter-spacing: 1px;
     }
 
-    .category-buttons {
+    .nav-cats {
       display: flex;
-      gap: 9px;
-      justify-content: center;
-      margin-bottom: 20px;
+      gap: 8px;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .cat-btn {
-      background: linear-gradient(145deg, #1c1f2b, #212634);
-      color: #a0aec0;
+    .nav-btn {
+      background: transparent;
       border: none;
-      padding: 10px 14px;
-      font-size: 13.5px;
+      color: #b3b3b3;
+      font-size: 14px;
       font-weight: 600;
-      border-radius: 30px;
+      padding: 8px 14px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.35), -3px -3px 8px rgba(255, 255, 255, 0.03);
+      transition: all 0.2s;
     }
 
-    .cat-btn:hover {
+    .nav-btn:hover { color: #fff; }
+    .nav-btn.active {
       color: #fff;
-      transform: translateY(-2px);
-    }
-
-    .cat-btn.active {
-      background: linear-gradient(145deg, #ff4136, #dc2f25);
-      color: #fff;
-      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 0 0 16px rgba(255, 59, 48, 0.4);
+      background: rgba(229, 9, 20, 0.25);
+      border-bottom: 2px solid #e50914;
     }
 
     #btn-unlock {
-      background: linear-gradient(145deg, #1a1d28, #222633);
       color: #666;
-      font-size: 14px;
+      font-size: 16px;
     }
 
-    #btn-unlock:hover {
-      color: #aaa;
-    }
+    #btn-adult { display: none; }
 
-    .select-wrapper {
-      margin-bottom: 14px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 12px;
-      color: #8b9bb4;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      margin-left: 3px;
-    }
-
-    select {
+    /* Hero / Player */
+    .hero {
+      position: relative;
       width: 100%;
-      padding: 13px 16px;
-      font-size: 15px;
-      font-weight: 500;
-      background: #1a1e29;
-      color: #e0e6ed;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      outline: none;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238b9bb4' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      cursor: pointer;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 20px 10px;
     }
 
-    select:focus {
-      border-color: #ff3b30;
-    }
-
-    select:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    #status {
-      text-align: center;
-      font-size: 13.5px;
-      color: #8b9bb4;
-      margin-bottom: 14px;
-      min-height: 20px;
-    }
-
-    #status.error {
-      color: #ff6b6b;
-    }
-
-    .player-container {
+    .player-box {
       position: relative;
       width: 100%;
       background: #000;
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       aspect-ratio: 16 / 9;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     #video {
       width: 100%;
       height: 100%;
       display: block;
-      background: #000;
       object-fit: contain;
+      background: #000;
     }
 
-    .footer-note {
+    .status-bar {
       text-align: center;
-      margin-top: 16px;
+      padding: 12px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .status-bar.error { color: #ff6b6b; }
+
+    /* Content rows */
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px 40px;
+    }
+
+    .row-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 24px 0 14px;
+      color: #fff;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #18181f;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+
+    .card:hover {
+      transform: scale(1.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      z-index: 2;
+    }
+
+    .card-poster {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      background: linear-gradient(145deg, #1c1f2b, #2a2f3d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #555;
+    }
+
+    .card-title {
+      padding: 10px 8px;
       font-size: 12px;
-      color: #5a6577;
+      font-weight: 600;
+      text-align: center;
+      color: #ddd;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card.playing {
+      border-color: #e50914;
+      box-shadow: 0 0 0 2px #e50914;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: #666;
+      padding: 40px 20px;
+      font-size: 15px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #444;
+      font-size: 12px;
     }
 
     @media (max-width: 600px) {
-      main { padding: 15px; }
-      .cat-btn { padding: 9px 11px; font-size: 12.5px; }
+      .navbar { padding: 12px 14px; flex-direction: column; gap: 10px; }
+      .cards { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+      .card-title { font-size: 11px; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <div class="header-bar">
-      <h1>PREMIUM LIVE TV</h1>
+
+  <nav class="navbar">
+    <div class="logo">PREMIUM TV</div>
+    <div class="nav-cats">
+      <button id="btn-sport" class="nav-btn active">⚽ Sports</button>
+      <button id="btn-movie" class="nav-btn">🎬 Movies</button>
+      <button id="btn-music" class="nav-btn">🎵 Music</button>
+      <button id="btn-preach" class="nav-btn">✝️ Preaching</button>
+      <button id="btn-srilanka" class="nav-btn">🇱🇰 Sri Lanka</button>
+      <button id="btn-animal" class="nav-btn">🦁 Animals</button>
+      <button id="btn-adult" class="nav-btn">🔥 18+</button>
+      <button id="btn-unlock" class="nav-btn">🔓</button>
     </div>
+  </nav>
 
-    <div class="category-buttons">
-      <button id="btn-sport" class="cat-btn">⚽ Sports</button>
-      <button id="btn-movie" class="cat-btn">🎬 Movies</button>
-      <button id="btn-music" class="cat-btn">🎵 Music</button>
-      <button id="btn-preach" class="cat-btn">✝️ Preaching</button>
-      <button id="btn-srilanka" class="cat-btn">🇱🇰 Sri Lanka</button>
-      <button id="btn-animal" class="cat-btn">🦁 Animals</button>
-
-      <!-- 18+ button - මුලින් hidden -->
-      <button id="btn-adult" class="cat-btn" style="display: none;">🔥 18+</button>
-
-      <!-- Unlock button -->
-      <button id="btn-unlock" class="cat-btn">🔓</button>
-    </div>
-
-    <div class="select-wrapper">
-      <label for="channelSelect">චැනල් තෝරන්න</label>
-      <select id="channelSelect" disabled>
-        <option value="">කාණ්ඩයක් තෝරන්න...</option>
-      </select>
-    </div>
-
-    <div id="status">කාණ්ඩයක් තෝරා චැනල් එකක් තෝරන්න</div>
-
-    <div class="player-container">
+  <section class="hero">
+    <div class="player-box">
       <video id="video" controls playsinline></video>
     </div>
+    <div id="status" class="status-bar">කාණ්ඩයක් තෝරා චැනල් එකක් click කරන්න</div>
+  </section>
 
-    <div class="footer-note">
-      Free public streams • Sports • Movies • Music • Preaching • Sri Lanka • Animals
+  <section class="content">
+    <h2 class="row-title" id="rowTitle">Sports Channels</h2>
+    <div id="cards" class="cards">
+      <div class="empty-msg">Channels load වෙමින්...</div>
     </div>
-  </main>
+  </section>
+
+  <div class="footer">Free public streams • Netflix-style Live TV</div>
 
   <script src="main.js"></script>
 </body>
