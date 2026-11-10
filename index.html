@@ -16,7 +16,6 @@
       min-height: 100dvh;
     }
 
-    /* Top Nav */
     .navbar {
       position: sticky;
       top: 0;
@@ -27,6 +26,8 @@
       padding: 14px 24px;
       background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
       backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .logo {
@@ -41,7 +42,7 @@
 
     .nav-cats {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -50,9 +51,9 @@
       background: transparent;
       border: none;
       color: #b3b3b3;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.2s;
@@ -65,24 +66,16 @@
       border-bottom: 2px solid #e50914;
     }
 
-    #btn-unlock {
-      color: #666;
-      font-size: 16px;
-    }
-
     #btn-adult { display: none; }
+    #btn-unlock { color: #666; }
 
-    /* Hero / Player */
     .hero {
-      position: relative;
-      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px 20px 10px;
     }
 
     .player-box {
-      position: relative;
       width: 100%;
       background: #000;
       border-radius: 12px;
@@ -106,10 +99,8 @@
       font-size: 14px;
       color: #aaa;
     }
-
     .status-bar.error { color: #ff6b6b; }
 
-    /* Content rows */
     .content {
       max-width: 1200px;
       margin: 0 auto;
@@ -120,7 +111,6 @@
       font-size: 1.25rem;
       font-weight: 700;
       margin: 24px 0 14px;
-      color: #fff;
     }
 
     .cards {
@@ -136,13 +126,17 @@
       cursor: pointer;
       transition: transform 0.25s, box-shadow 0.25s;
       border: 1px solid rgba(255,255,255,0.06);
-      position: relative;
     }
 
     .card:hover {
       transform: scale(1.06);
       box-shadow: 0 12px 30px rgba(0,0,0,0.5);
       z-index: 2;
+    }
+
+    .card.playing {
+      border-color: #e50914;
+      box-shadow: 0 0 0 2px #e50914;
     }
 
     .card-poster {
@@ -167,16 +161,11 @@
       text-overflow: ellipsis;
     }
 
-    .card.playing {
-      border-color: #e50914;
-      box-shadow: 0 0 0 2px #e50914;
-    }
-
     .empty-msg {
       text-align: center;
       color: #666;
       padding: 40px 20px;
-      font-size: 15px;
+      grid-column: 1 / -1;
     }
 
     .footer {
@@ -187,7 +176,7 @@
     }
 
     @media (max-width: 600px) {
-      .navbar { padding: 12px 14px; flex-direction: column; gap: 10px; }
+      .navbar { padding: 12px 14px; }
       .cards { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
       .card-title { font-size: 11px; }
     }
@@ -219,7 +208,7 @@
   <section class="content">
     <h2 class="row-title" id="rowTitle">Sports Channels</h2>
     <div id="cards" class="cards">
-      <div class="empty-msg">Channels load වෙමින්...</div>
+      <div class="empty-msg">Loading...</div>
     </div>
   </section>
 
